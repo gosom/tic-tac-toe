@@ -6,13 +6,30 @@ def move_still_possible(S):
 
 
 def move_at_random(S, p):
+    x, y = get_random_move(S, p)
+    S[x, y] = p
+
+    return S
+
+
+def get_random_move(S, p):
     xs, ys = np.where(S==0)
 
     i = np.random.permutation(np.arange(xs.size))[0]
+    return xs[i], ys[i]
 
-    S[xs[i],ys[i]] = p
+def get_best_random_move(S, p, good_moves):
+    xs, ys = np.where(S==0)
+    for e in good_moves:
+        for x, y in zip(xs, ys):
+            i, j = int(x), int(y)
+            if e[0] == (i, j):
+                return e[0]
+    return (None, None)
 
-    return S
+def make_move(S, p, x, y):
+     S[x, y] = p
+     return S
 
 
 def move_was_winning_move(S, p):
