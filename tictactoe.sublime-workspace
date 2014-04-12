@@ -1,0 +1,424 @@
+{
+	"auto_complete":
+	{
+		"selected_items":
+		[
+			[
+				"run",
+				"run_tournament  (function)"
+			],
+			[
+				"py",
+				"pylab  (module)"
+			],
+			[
+				"up",
+				"updateProgress  (variable)"
+			],
+			[
+				"iter",
+				"iteritems  (function)"
+			],
+			[
+				"new",
+				"newRandomTournamentAction  (variable)"
+			],
+			[
+				"req",
+				"request_queue_ra  (variable)"
+			],
+			[
+				"ra",
+				"request_queue_ra  (variable)"
+			],
+			[
+				"res",
+				"resources_want_to_access  (variable)"
+			],
+			[
+				"cone",
+				"connected_clients  (variable)"
+			],
+			[
+				"re",
+				"replies_expected  (variable)"
+			],
+			[
+				"net",
+				"netcal  (module)"
+			],
+			[
+				"repl",
+				"reply_received  (function)"
+			],
+			[
+				"pr",
+				"proxy_gen  (function)"
+			],
+			[
+				"cer",
+				"create_proxy  (function)"
+			],
+			[
+				"r",
+				"request_queue  (variable)"
+			],
+			[
+				"conn",
+				"connected  (variable)"
+			],
+			[
+				"__ini",
+				"__init_token_ring  (function)"
+			],
+			[
+				"u",
+				"use_token_ring  (variable)"
+			],
+			[
+				"co",
+				"connected_clients  (variable)"
+			],
+			[
+				"se",
+				"send_release  (function)"
+			],
+			[
+				"c",
+				"create_proxy  (function)"
+			],
+			[
+				"toke",
+				"token_ring  (variable)"
+			],
+			[
+				"E",
+				"Exception  (class)"
+			],
+			[
+				"tok",
+				"token_ring  (variable)"
+			],
+			[
+				"token",
+				"token_queue  (variable)"
+			],
+			[
+				"nex",
+				"next_peer"
+			],
+			[
+				"next",
+				"next_peer"
+			],
+			[
+				"con",
+				"connected_clients  (variable)"
+			],
+			[
+				"bind",
+				"bind_address"
+			],
+			[
+				"par",
+				"parse_args"
+			],
+			[
+				"me",
+				"me_alg"
+			],
+			[
+				"mutu",
+				"mutual_ex_alg"
+			],
+			[
+				"__",
+				"__init__"
+			]
+		]
+	},
+	"buffers":
+	[
+	],
+	"build_system": "",
+	"command_palette":
+	{
+		"height": 120.0,
+		"selected_items":
+		[
+			[
+				"Insall",
+				"Package Control: Install Package"
+			],
+			[
+				"Install",
+				"Package Control: Install Package"
+			],
+			[
+				"Insta",
+				"Package Control: Install Package"
+			],
+			[
+				"Instal",
+				"Package Control: Install Package"
+			],
+			[
+				"Packa",
+				"Package Control: Discover Packages"
+			],
+			[
+				"Pac",
+				"Package Control: Install Package"
+			],
+			[
+				"Pack",
+				"Package Control: Install Package"
+			],
+			[
+				"Install ",
+				"Package Control: Install Package"
+			]
+		],
+		"width": 588.0
+	},
+	"console":
+	{
+		"height": 125.0
+	},
+	"distraction_free":
+	{
+		"menu_visible": true,
+		"show_minimap": false,
+		"show_open_files": false,
+		"show_tabs": false,
+		"side_bar_visible": false,
+		"status_bar_visible": false
+	},
+	"file_history":
+	[
+		"/home/giorgos/gameAI/tic-tac-toe/tic_tac_toe.py",
+		"/home/giorgos/gameAI/tic-tac-toe/tic_tac_gui.py",
+		"/home/giorgos/gameAI/tic-tac-toe/lib/gamestate.py",
+		"/home/giorgos/gameAI/tic-tac-toe/lib/__init__.py",
+		"/home/giorgos/gameAI/tic-tac-toe/lib",
+		"/home/giorgos/gameAI/tic-tac-toe/dianysma.py",
+		"/home/giorgos/gameAI/tic-tac-toe/good_moves.pickle",
+		"/home/giorgos/gameAI/tic-tac-toe/tic-tac-toe.py",
+		"/home/giorgos/projects/chrome_extensions/chrome-query/devtools.html",
+		"/home/giorgos/projects/chrome_extensions/chrome-query/devtools.js",
+		"/home/giorgos/projects/chrome_extensions/chrome-query/manifest.json",
+		"/home/giorgos/projects/segment/segment.py",
+		"/home/giorgos/projects/dict_search/segment.py",
+		"/home/giorgos/projects/dict_search/levenshtein.py",
+		"/home/giorgos/projects/dict_search/dagw.py",
+		"/home/giorgos/projects/dict_search/trie_levenshtein.py",
+		"/home/giorgos/crypto/schnor.py",
+		"/home/giorgos/crypto/bsmooth.py",
+		"/home/giorgos/crypto/points",
+		"/home/giorgos/crypto/ex12_komninos.txt",
+		"/home/giorgos/projects/netcal/netcal/client/node.py",
+		"/home/giorgos/projects/netcal/netcal/client/lamport.py",
+		"/home/giorgos/projects/netcal/netcal/srv/services.py",
+		"/home/giorgos/projects/netcal/netcal/srv/server.py",
+		"/home/giorgos/projects/netcal/netcal/client/ra.py",
+		"/home/giorgos/projects/netcal/start.sh",
+		"/home/giorgos/Calendar/src/Calendar.java",
+		"/home/giorgos/Calendar/src/XMLMethods.java",
+		"/home/giorgos/projects/netcal/netcal/client/token_ring.py",
+		"/home/giorgos/crypto/otp.py",
+		"/home/giorgos/.config/sublime-text-2/Packages/User/Preferences.sublime-settings",
+		"/home/giorgos/Calendar/src/TokenThread.java",
+		"/home/giorgos/projects/netcal/netcal.sublime-project",
+		"/home/giorgos/projects/netcal/cmd2.py",
+		"/home/giorgos/projects/netcal/netcal/client/token_ring_node.py",
+		"/home/giorgos/projects/netcal/netcal/client/TokenRingNode.py",
+		"/home/giorgos/LearningProg/c++/intro/hello.cpp",
+		"/home/giorgos/LearningProg/c++/intro/add2Numbers.cpp",
+		"/home/giorgos/LearningProg/c++/intro/SumNumbers.cpp",
+		"/home/giorgos/.config/sublime-text-2/Packages/SublimeREPL/SublimeREPL.sublime-settings",
+		"/home/giorgos/.config/sublime-text-2/Packages/SideBarEnhancements/messages/11.13.2012.1305.0.txt"
+	],
+	"find":
+	{
+		"height": 34.0
+	},
+	"find_in_files":
+	{
+		"height": 0.0,
+		"where_history":
+		[
+		]
+	},
+	"find_state":
+	{
+		"case_sensitive": false,
+		"find_history":
+		[
+			"prob_tournament",
+			"save_plot",
+			")\n",
+			"        \n",
+			"                \n",
+			"value",
+			")\n",
+			"]\n",
+			":\n",
+			"')\n",
+			"       \n",
+			"set",
+			"        #",
+			"p",
+			"self.connected",
+			"connected",
+			"request_queue_ra",
+			"CS",
+			"self",
+			"numRepliesRecived",
+			"queueFunc",
+			"requestCS",
+			"setSignedInStatus",
+			"token_ring",
+			"startTokenPassing",
+			"createTokenThread",
+			"()\n",
+			"token_",
+			"self",
+			"tokenReceived",
+			"PAUSE",
+			"__connect",
+			"token_rings",
+			"				\n",
+			"get_proxy",
+			"token_ring",
+			"proxy_a",
+			"        \n",
+			"proxy_gen",
+			"block",
+			"__execute_token_ring_cmd",
+			"							\n",
+			":\n",
+			"')\n",
+			"[]\n",
+			"					\n",
+			")\n",
+			":\n",
+			"        \n",
+			".\n",
+			"False",
+			"property",
+			"				\n",
+			"):\n",
+			"__init_node",
+			" \n",
+			"		\n",
+			"def",
+			",):\n",
+			"()\n",
+			":\n",
+			"')\n",
+			":\n",
+			")\n",
+			"        \n",
+			"()\n",
+			"    \n",
+			"opts",
+			":\n",
+			"mutual_ex_alg",
+			"D"
+		],
+		"highlight": true,
+		"in_selection": false,
+		"preserve_case": false,
+		"regex": false,
+		"replace_history":
+		[
+		],
+		"reverse": false,
+		"show_context": true,
+		"use_buffer2": true,
+		"whole_word": false,
+		"wrap": true
+	},
+	"groups":
+	[
+		{
+			"sheets":
+			[
+			]
+		},
+		{
+			"sheets":
+			[
+			]
+		}
+	],
+	"incremental_find":
+	{
+		"height": 0.0
+	},
+	"input":
+	{
+		"height": 31.0
+	},
+	"layout":
+	{
+		"cells":
+		[
+			[
+				0,
+				0,
+				1,
+				1
+			],
+			[
+				1,
+				0,
+				2,
+				1
+			]
+		],
+		"cols":
+		[
+			0.0,
+			0.562402765773,
+			1.0
+		],
+		"rows":
+		[
+			0.0,
+			1.0
+		]
+	},
+	"menu_visible": true,
+	"output.exec":
+	{
+		"height": 96.0
+	},
+	"replace":
+	{
+		"height": 0.0
+	},
+	"save_all_on_build": true,
+	"select_file":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"select_project":
+	{
+		"height": 0.0,
+		"selected_items":
+		[
+		],
+		"width": 0.0
+	},
+	"show_minimap": false,
+	"show_open_files": false,
+	"show_tabs": true,
+	"side_bar_visible": true,
+	"side_bar_width": 209.0,
+	"status_bar_visible": true
+}
