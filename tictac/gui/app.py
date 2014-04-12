@@ -42,9 +42,13 @@ class TicTacToeApp(QtGui.QMainWindow):
         vbox.addLayout(grid)
 
         # menu actions
-        self.newGameAction = QtGui.QAction('New', self)
+        self.newGameAction = QtGui.QAction('New Random Game', self)
         self.newGameAction.setShortcut('Ctrl+N')
         self.newGameAction.triggered.connect(self.onNewGame)
+
+        self.newSmartGameAction = QtGui.QAction('New Smart Game', self)
+        self.newSmartGameAction.setShortcut('Ctrl+H')
+        self.newSmartGameAction.triggered.connect(self.onNewSmartGame)
 
         self.newRandomTournamentAction = QtGui.QAction('Random Tournament',
                                                         self)
@@ -55,12 +59,18 @@ class TicTacToeApp(QtGui.QMainWindow):
         self.newProbTournamentAction.setShortcut('Ctrl+P')
         self.newProbTournamentAction.triggered.connect(self.onProbTournament)
 
+        self.newSmartTournamentAction = QtGui.QAction('Heuristic Tournament', self)
+        self.newSmartTournamentAction.setShortcut('Ctrl+P')
+        self.newSmartTournamentAction.triggered.connect(self.onSmartTournament)
+
         self.closeAction = QtGui.QAction("Close", self)
         self.closeAction.triggered.connect(self.onClose)
 
         menu = self.menuBar().addMenu("Game")
         menu.addAction(self.newGameAction)
+        menu.addAction(self.newSmartGameAction)
         menu.addAction(self.newRandomTournamentAction)
+        menu.addAction(self.newSmartTournamentAction)
         menu.addAction(self.newProbTournamentAction)
         menu.addAction(self.closeAction)
         # end menu actions
@@ -107,6 +117,9 @@ class TicTacToeApp(QtGui.QMainWindow):
     def onNewGame(self):
         self.command_q.put('new')
 
+    def onNewSmartGame(self):
+        self.command_q.put('smart')
+
     def onRandomTournament(self,):
         self.progress.show()
         self.command_q.put('random_tournament')
@@ -114,3 +127,7 @@ class TicTacToeApp(QtGui.QMainWindow):
     def onProbTournament(self,):
         self.progress.show()
         self.command_q.put('prob_tournament')
+
+    def onSmartTournament(self):
+        self.progress.show()
+        self.command_q.put('smart_tournament')

@@ -7,9 +7,10 @@ try:
 except ImportError:
     sys.exit('pyside is required!')
 
-from ..game import TicTacGame
-from ..lib.player import RandomPlayer, SmartPlayer
+from ..lib.game import TicTacGame
+from ..lib.player import RandomPlayer, ProbRandomPlayer, SmartPlayer
 from ..lib.tournament import Tournament, TournamentStats
+from ..lib import get_good_moves
 
 class AIThread(QtCore.QThread):
     updateButton = QtCore.Signal(int, str)
@@ -27,23 +28,29 @@ class AIThread(QtCore.QThread):
         while True:
             command = self.q.get(block=True)
             if command == 'new':
-                self.play_game()
+                self.play_game(play_type=0)
+            elif command == 'smart':
+                self.play_game(play_type=2)
             elif command == 'quit':
                 break
             elif command == 'random_tournament':
                 self.run_tournament(play_type=0)
             elif command == 'prob_tournament':
                 self.run_tournament(play_type=1)
-            elif command == 'heuristic_tournament':
+            elif command == 'smart_tournament':
                 self.run_tournament(play_type=2)
             else:
                 self.log.warning('Invalid command %s', command)
 
     def play_game(self, tournament=False, play_type=0):
-        if play_type == 1:
-            with open('good_moves.pickle', 'rb') as f:
-                good_moves = pickle.load(f)
-        p1 = RandomPlayer(1)
+        if play_type == 0:
+            p1 = RandomPlayer(1)
+        elif play_type == 1:
+            p1 = ProbRandomPlayer(1, get_good_moves())
+        elif play_type == 2:
+            p1 = SmartPlayer(1)
+        else:
+            raise Exception('Invalid play_type')
         thegame = TicTacGame(player1=p1, player2=RandomPlayer(-1))
         self.__reset_buttons()
         thegame.start(draw_signal=self.updateButton)
