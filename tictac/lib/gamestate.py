@@ -23,9 +23,11 @@ class GameState(object):
         cls = self.__class__
         result = cls.__new__(cls)
         memo[id(self)] = result
-        #for k, v in self.__dict__.items():
-        #    setattr(result, k, deepcopy(v, memo))
-        result.gameState = np.copy(self.gameState)
+        for k, v in self.__dict__.items():
+            if k == 'gameState':
+                result.gameState = np.copy(self.gameState)
+            else:
+                setattr(result, k, deepcopy(v, memo))
         return result
 
     def __eq__(self, other):
@@ -43,6 +45,10 @@ class GameState(object):
             if self.is_win(p):
                 return p
         return None
+
+    @property
+    def game_over(self):
+        return not self.move_still_possible()
 
     def is_win(self, p):
         if np.max((np.sum(self.gameState, axis=0)) * p) == 3:
@@ -90,6 +96,10 @@ class GameState(object):
         """
         x, y = move
         self.gameState[x, y] = player
+
+    def undo_move(self, move):
+        x, y = move
+        self.gameState[x, y] = 0
 
 
 

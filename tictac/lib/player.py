@@ -5,6 +5,7 @@ import numpy as np
 from copy import deepcopy
 
 from . import SYMBOLS
+from .ai import negamax
 
 
 class BasePlayer(object):
@@ -18,6 +19,10 @@ class BasePlayer(object):
 
     def __repr__(self):
         return SYMBOLS[self.player]
+
+    @property
+    def opponent(self):
+        return -1*self.player
 
 
 class RandomPlayer(BasePlayer):
@@ -39,9 +44,12 @@ class ProbRandomPlayer(BasePlayer):
 class SmartPlayer(BasePlayer):
 
     def get_move(self, gs):
-        move = self.minimax(gs, self.player)
+        #move = self.minimax(gs, self.player)
+        score, move = negamax(gs, self.player, 0, 9)
+        self.log.debug('SmartPlayer choice %s', str(move))
         return move
 
+    '''
     def evaluate(self, state):
         if state.winner is None:
             return 0
@@ -88,3 +96,4 @@ class SmartPlayer(BasePlayer):
                 best_move = move
                 best_score = score
         return best_score
+    '''
