@@ -44,56 +44,14 @@ class ProbRandomPlayer(BasePlayer):
 class SmartPlayer(BasePlayer):
 
     def get_move(self, gs):
-        #move = self.minimax(gs, self.player)
-        score, move = negamax(gs, self.player, 0, 9)
-        self.log.debug('SmartPlayer choice %s', str(move))
-        return move
+        return self.nextmove(gs)
 
-    '''
-    def evaluate(self, state):
-        if state.winner is None:
-            return 0
-        return 1 if state.winner == self.player else -1
+    def nextmove(self, gs):
+        best_move, best_score = None, None
 
-    def minimax(self, gs, p):
-        """from here:
-        http://www.giocc.com/concise-implementation-of-minimax-through-higher-order-functions.html
-        """
-        moves = gs.get_available_moves()
-        best_move = moves[0]
-        best_score = float('-inf')
-        for move in moves:
-            clone = deepcopy(gs)
-            clone.do_move(move, p)
-            score = self.min_play(clone)
+        for m in gs.get_available_moves():
+            score = - negamax(gs, 9, float('inf'), -float('inf'), -self.player)
             if score > best_score:
-                best_move = move
+                best_move = m
                 best_score = score
         return best_move
-
-    def min_play(self, gs):
-        if gs.move_still_possible():
-            return self.evaluate(gs)
-        moves = gs.get_available_moves()
-        best_score = float('inf')
-        for move in moves:
-            clone = deepcopy(gs)
-            score = self.max_play(clone)
-            if score < best_score:
-                best_move = move
-                best_score = score
-        return best_score
-
-    def max_play(self, gs):
-        if gs.move_still_possible():
-            return self.evaluate(gs)
-        moves = gs.get_available_moves()
-        best_score = float('-inf')
-        for move in moves:
-            clone = deepcopy(gs)
-            score = self.min_play(clone)
-            if score > best_score:
-                best_move = move
-                best_score = score
-        return best_score
-    '''
