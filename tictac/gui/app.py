@@ -16,7 +16,7 @@ from .ai import AIThread
 
 
 class TicTacToeApp(QtGui.QMainWindow):
-    ''' tic tac toe'''
+    """"tic tac toe"""
 
     def __init__(self):
         QtGui.QMainWindow.__init__(self)

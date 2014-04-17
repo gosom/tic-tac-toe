@@ -53,6 +53,7 @@ class MatplotlibWidget(QtGui.QWidget):
 
 
 class TicTacToeButton(QtGui.QPushButton):
+    """ widget is taken from github user https://github.com/niklasf"""
 
     def __init__(self):
         QtGui.QPushButton.__init__(self)

@@ -5,7 +5,7 @@ import numpy as np
 from copy import deepcopy
 
 from . import SYMBOLS
-from .ai import negamax
+#from .ai import negamax
 
 
 class BasePlayer(object):
@@ -44,14 +44,37 @@ class ProbRandomPlayer(BasePlayer):
 class SmartPlayer(BasePlayer):
 
     def get_move(self, gs):
-        return self.nextmove(gs)
+        move = None
+        def negamax(gs, p, depth, alpha=float('inf'), beta=-9999):
+            global move
+            if gs.game_over:
+                return self.evaluate(gs, p)
+            opponent = -p
+            for m in gs.get_available_moves():
+                tmp = deepcopy(gs)
+                tmp.do_move(m, p)
+                score = - negamax(tmp, opponent, depth+1, -beta, -alpha)
+                print score
+                if score > alpha:
+                    print 'eee'
+                    alpha = score
+                    if depth == 1:
+                        print 'edd'
+                        move = m
+                if alpha >= beta:
+                    break
+            return alpha
+        negamax(gs, self.player, 0,)
+        print move
+        return move
 
-    def nextmove(self, gs):
-        best_move, best_score = None, None
+    def evaluate(self, state, p):
+        """
+        :state: GameState
+        """
+        if state.winner is None:
+            return 0
+        return 1 if state.winner == p else -1
 
-        for m in gs.get_available_moves():
-            score = - negamax(gs, 9, float('inf'), -float('inf'), -self.player)
-            if score > best_score:
-                best_move = m
-                best_score = score
-        return best_move
+
+

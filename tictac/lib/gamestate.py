@@ -1,4 +1,8 @@
 # -*- coding: utf-8 -*-
+""" this code is based on
+Prof. Dr. Christian Bauckhage (http://mmprec.iais.fraunhofer.de/bauckhage)
+sample code
+"""
 from copy import copy, deepcopy
 
 import numpy as np
