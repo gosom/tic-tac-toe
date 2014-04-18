@@ -45,7 +45,7 @@ class GameState(object):
 
     @property
     def winner(self):
-        for p in SYMBOLS.iterkeys():
+        for p in filter(lambda p: p != 0, SYMBOLS.iterkeys()):
             if self.is_win(p):
                 return p
         return None
@@ -55,6 +55,7 @@ class GameState(object):
         return not self.move_still_possible()
 
     def is_win(self, p):
+        assert p != 0
         if np.max((np.sum(self.gameState, axis=0)) * p) == 3:
             return True
         if np.max((np.sum(self.gameState, axis=1)) * p) == 3:
@@ -68,7 +69,7 @@ class GameState(object):
     def is_draw(self):
         if self.move_still_possible():
             return False
-        return not any([self.is_win(p) for p in SYMBOLS.iterkeys()])
+        return not any([self.is_win(p) for p in filter(lambda p: p != 0, SYMBOLS.iterkeys())])
 
     def move_still_possible(self):
         return not (self.gameState[self.gameState==0].size == 0)

@@ -40,3 +40,52 @@ def test_moves():
     gs2.do_move(0, 1)
     assert gs2.game_over == True
 
+def test_winner():
+    gs = GameState(gs=np.zeros((6, 7), dtype=int),)
+    # setup playe1 moves
+    gs.do_move(0, 1)
+    gs.do_move(0, 1)
+    gs.do_move(0, 1)
+    gs.do_move(0, 1)
+    gs.do_move(1, -1)
+    assert gs.is_win(1) == True
+    assert gs.is_win(-1) == False
+
+    gs.do_move(2, -1)
+    gs.do_move(3, -1)
+    assert gs.is_win(-1) == False
+    gs.do_move(6, -1)
+    assert gs.is_win(-1) == False
+    gs.do_move(4, -1)
+    assert gs.is_win(-1) == True
+
+    gs = GameState(gs=np.zeros((6, 7), dtype=int),)
+    gs.do_move(2, -1)
+    gs.do_move(3, 1)
+    gs.do_move(3, -1)
+    gs.do_move(4, 1)
+    gs.do_move(4, -1)
+    gs.do_move(4, -1)
+    for _ in xrange(3):
+        gs.do_move(5, 1)
+    gs.do_move(4, 1)
+    assert gs.is_win(-1) == False
+    gs.do_move(5, -1) # now he should win
+    assert gs.is_win(1) == False
+    assert gs.is_win(-1) == True
+    assert gs.winner == -1
+
+def test_diagonals():
+    gs = GameState(gs=np.zeros((6, 7), dtype=int),)
+    gs.do_move(0, 1)
+    gs.do_move(5, 1)
+    gs.do_move(6, 1)
+    assert len(gs.get_diagonals()) == 25
+
+
+
+
+
+
+
+

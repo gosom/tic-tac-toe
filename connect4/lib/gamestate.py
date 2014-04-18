@@ -1,5 +1,7 @@
 # -*- coding: utf-8 -*-
 from copy import copy, deepcopy
+import itertools
+import math
 
 import numpy as np
 
@@ -15,6 +17,13 @@ class GameState(object):
     @property
     def game_over(self):
         return not self.move_still_possible()
+
+    @property
+    def winner(self):
+        for p in filter(lambda p: p != 0,SYMBOLS.iterkeys()):
+            if self.is_win(p):
+                return p
+        return None
 
     def move_still_possible(self):
         """a move is still possible when there is at least one
@@ -47,6 +56,35 @@ class GameState(object):
                 self.gameState[row, move] = player
                 break
 
+    def is_win(self, p):
+        """Determine if the player has a 4 in a row in:
+            - columns, rows, diagonals
+            http://docs.scipy.org/doc/numpy/reference/generated/numpy.diag.html
+        """
+        assert p != 0
+        # fist for rows:
+        #rows_array = np.array_split(self.gameState, 6, axis=0)
+        rows =  [self.gameState[i,:].tolist() for i in xrange(0, 6)]
+        columns = [self.gameState[:,i].tolist() for i in xrange(0, 7)]
+        diags = self.get_diagonals()
+        if self.find_score4(rows+columns+diags, p):
+            return True
+        return False
+
+    def find_score4(self, l, p):
+        for r in l:
+            for k, v in itertools.groupby(r):
+                if sum(v) == p * 4:
+                    return True
+        return False
+
+    def get_diagonals(self):
+        """"""
+        # upper diagonals k > 0
+        diags = [self.gameState[::-1,:].diagonal(i)
+                for i in range(-6, 7)]
+        diags.extend(self.gameState.diagonal(i) for i in range(6,-6,-1))
+        return list(d.tolist() for d in diags)
 
     def __repr__(self):
         B = np.copy(self.gameState).astype(object)
