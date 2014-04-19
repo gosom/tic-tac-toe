@@ -4,6 +4,9 @@ import random
 
 
 def score(gs, pId, level):
+    """if the gs is a win for the player pId it returns level
+    if a win for the opponent -level
+    otherwise (draw) zero"""
     val = gs.evaluation()
     if val == 0:
         return 0
@@ -11,6 +14,14 @@ def score(gs, pId, level):
 
 
 def negamax(gs, pId, level=9):
+    """Implementation of negamax algorithm.
+    see here: http://www.hamedahmadi.com/gametree/#negamax
+    Parameters:
+    :gs : the gamestate
+    :pId : the player (1, -1)
+    :level : The current level (9 max)
+    Returns a tuple (best_score, best_move)
+    """
     if gs.game_over:
         return score(gs, pId, level), None
     max_score = -float('inf')
@@ -26,5 +37,5 @@ def negamax(gs, pId, level=9):
             max_score = x
             best_move = move
     return max_score, best_move
-    
+
 
