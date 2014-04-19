@@ -6,7 +6,7 @@ from . import save_good_moves, get_good_moves
 
 class Tournament(object):
 
-    def __init__(self, rounds=2000, play_type=0):
+    def __init__(self, rounds=100, play_type=0):
         self.log = logging.getLogger(self.__class__.__name__)
         self.rounds = rounds
         self.play_type = play_type
@@ -19,7 +19,8 @@ class Tournament(object):
             p1 = SmartPlayer(1)
         else:
             raise Exception('Invalid play_type')
-        self.players = (p1, RandomPlayer(-1))
+        p2 = RandomPlayer(-1)
+        self.players = (p1, p2)
         self.tournament_stats = TournamentStats(self.rounds)
 
     def start(self, qsignal=None):

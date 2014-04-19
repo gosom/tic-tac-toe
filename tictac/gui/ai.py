@@ -51,7 +51,8 @@ class AIThread(QtCore.QThread):
             p1 = SmartPlayer(1)
         else:
             raise Exception('Invalid play_type')
-        thegame = TicTacGame(player1=p1, player2=RandomPlayer(-1))
+        p2 = RandomPlayer(-1)
+        thegame = TicTacGame(player1=p1, player2=p2)
         self.__reset_buttons()
         thegame.start(draw_signal=self.updateButton)
 

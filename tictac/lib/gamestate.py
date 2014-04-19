@@ -9,6 +9,7 @@ import numpy as np
 
 from ..lib import SYMBOLS
 
+
 class GameState(object):
 
     def __init__(self, gs):
@@ -45,14 +46,21 @@ class GameState(object):
 
     @property
     def winner(self):
-        for p in filter(lambda p: p != 0, SYMBOLS.iterkeys()):
-            if self.is_win(p):
-                return p
-        return None
+        val = self.evaluation()
+        assert val == 100
+        return val
 
     @property
     def game_over(self):
-        return not self.move_still_possible()
+        return self.evaluation() != 100
+
+    def evaluation(self):
+        for p in filter(lambda x: x != 0, SYMBOLS.iterkeys()):
+            if self.is_win(p):
+                return p
+        if self.has_empty_slot():
+            return 100
+        return 0
 
     def is_win(self, p):
         assert p != 0
@@ -67,17 +75,19 @@ class GameState(object):
         return False
 
     def is_draw(self):
-        if self.move_still_possible():
-            return False
-        return not any([self.is_win(p) for p in filter(lambda p: p != 0, SYMBOLS.iterkeys())])
+        val == self.evaluation()
+        assert val != 100
+        return val == 0
+
+    def has_empty_slot(self):
+        return not (self.gameState[self.gameState==0].size == 0)
 
     def move_still_possible(self):
-        return not (self.gameState[self.gameState==0].size == 0)
+        return self.has_empty_slot()
 
     def get_available_moves(self):
         xs, ys = np.where(self.gameState==0)
         return tuple(((i, j) for i,j in zip(xs, ys)))
-        #return np.array(np.where(self.gameState==0)).T
 
     def get_random_move(self):
         xs, ys = np.where(self.gameState==0)

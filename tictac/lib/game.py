@@ -31,8 +31,7 @@ class TicTacGame(object):
         mvcntr = 1
 
         already_updated = set()
-        print player
-        while self.state.move_still_possible() and not self.winner:
+        while self.state.evaluation() == 100:
             self.log.info('%s moves', repr(player))
             move = player.get_move(self.state)
             self.state.do_move(move, player.player)
