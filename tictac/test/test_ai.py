@@ -6,7 +6,7 @@ from ..lib import gamestate as gamestate
 
 
 def test_negamax():
-    gs = gamestate.GameState(gs=np.zeros((3,3), dtype=int),)
+    gs = gamestate.TicTacGameState(gs=np.zeros((3,3), dtype=int),)
 
     gs.do_move((0, 0), 1)
     #gs.do_move((0, 2), 1)

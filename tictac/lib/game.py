@@ -4,13 +4,13 @@ import time
 
 import numpy as np
 
-from .gamestate import GameState
+from .gamestate import TicTacGameState, Connect4GameState
 from . import SYMBOLS
 
 
 class TicTacGame(object):
 
-    def __init__(self, player1, player2):
+    def __init__(self, player1, player2, connect4=False):
         """
         :p1 : Player object
         :p2 : Player object
@@ -19,7 +19,15 @@ class TicTacGame(object):
         self.log.debug('Starting new TicTacToe game!')
         self.players = (player1, player2)
         self.player1, self.player2 = player1, player2
-        self.state = GameState(gs=np.zeros((3, 3), dtype=int))
+        self.connect4 = connect4
+        if not connect4:
+            GameState = TicTacGameState
+            rows, cols = 3, 3
+        else:
+            self.log.info('Using Connect4GameState')
+            GameState = Connect4GameState
+            rows, cols = 6, 7
+        self.state = GameState(gs=np.zeros((rows, cols), dtype=int))
         self.winner = None
         self.stats = {'winner': None, 'x': [], 'o': [], 'moves_num': None}
 
@@ -62,11 +70,12 @@ class TicTacGame(object):
 
     def __draw_state(self, S, already_updated, qsignal):
         it = np.nditer(S, flags=['multi_index'])
+        btn_val = 3 if not self.connect4 else 6
         while not it.finished:
             value = int(it[0])
             if value != 0:
                 x, y = it.multi_index
-                button_id = x + y * 3
+                button_id = x + y * btn_val
                 if button_id not in already_updated:
                     already_updated.add(button_id)
                     qsignal.emit(button_id, SYMBOLS[value].upper())

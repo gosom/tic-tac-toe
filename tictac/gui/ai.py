@@ -8,7 +8,7 @@ except ImportError:
     sys.exit('pyside is required!')
 
 from ..lib.game import TicTacGame
-from ..lib.player import RandomPlayer, ProbRandomPlayer, SmartPlayer
+from ..lib.player import RandomPlayer, ProbRandomPlayer, SmartPlayer, RandomConnect4Player
 from ..lib.tournament import Tournament, TournamentStats
 from ..lib import get_good_moves
 
@@ -17,12 +17,14 @@ class AIThread(QtCore.QThread):
     updateProgress = QtCore.Signal(int)
     finishedTournament = QtCore.Signal(TournamentStats)
 
-    def __init__(self, q):
+    def __init__(self, q, connect4=False):
         QtCore.QThread.__init__(self)
         self.log = logging.getLogger(self.__class__.__name__)
         self.log.debug('Starting %s', self.__class__.__name__)
         self.daemon = True
         self.q = q
+        self.connect4 = connect4
+        self.random_player_constructor = RandomConnect4Player if self.connect4 else RandomPlayer
 
     def run(self):
         while True:
@@ -44,15 +46,15 @@ class AIThread(QtCore.QThread):
 
     def play_game(self, tournament=False, play_type=0):
         if play_type == 0:
-            p1 = RandomPlayer(1)
+            p1 = self.random_player_constructor(1)
         elif play_type == 1:
             p1 = ProbRandomPlayer(1, get_good_moves())
         elif play_type == 2:
             p1 = SmartPlayer(1)
         else:
             raise Exception('Invalid play_type')
-        p2 = RandomPlayer(-1)
-        thegame = TicTacGame(player1=p1, player2=p2)
+        p2 = self.random_player_constructor(-1)
+        thegame = TicTacGame(player1=p1, player2=p2, connect4=self.connect4)
         self.__reset_buttons()
         thegame.start(draw_signal=self.updateButton)
 

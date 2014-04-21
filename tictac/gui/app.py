@@ -18,7 +18,7 @@ from .ai import AIThread
 class TicTacToeApp(QtGui.QMainWindow):
     """"tic tac toe"""
 
-    def __init__(self):
+    def __init__(self, connect4=False):
         QtGui.QMainWindow.__init__(self)
         self.log = logging.getLogger(self.__class__.__name__)
         self.log.info('Starting %s', self.__class__.__name__)
@@ -34,10 +34,14 @@ class TicTacToeApp(QtGui.QMainWindow):
         grid = QtGui.QGridLayout()
         self.buttons = QtGui.QButtonGroup()
         self.buttons.setExclusive(False)
-        for i in xrange(3):
-            for j in xrange(3):
+        self.connect4 =  connect4
+
+        rows, cols = (6, 7) if connect4 else (3, 3)
+        btn_val = 6 if connect4 else 3
+        for i in xrange(rows):
+            for j in xrange(cols):
                 button = TicTacToeButton()
-                self.buttons.addButton(button, i + j * 3)
+                self.buttons.addButton(button, i + j * btn_val)
                 grid.addWidget(button, i, j, 0)
         vbox.addLayout(grid)
 
@@ -46,43 +50,45 @@ class TicTacToeApp(QtGui.QMainWindow):
         self.newGameAction.setShortcut('Ctrl+N')
         self.newGameAction.triggered.connect(self.onNewGame)
 
-        self.newSmartGameAction = QtGui.QAction('New Smart Game', self)
-        self.newSmartGameAction.setShortcut('Ctrl+H')
-        self.newSmartGameAction.triggered.connect(self.onNewSmartGame)
-
         self.newRandomTournamentAction = QtGui.QAction('Random Tournament',
                                                         self)
         self.newRandomTournamentAction.setShortcut('Ctrl+R')
         self.newRandomTournamentAction.triggered.connect(self.onRandomTournament)
 
-        self.newProbTournamentAction = QtGui.QAction('Prob Tournament', self)
-        self.newProbTournamentAction.setShortcut('Ctrl+P')
-        self.newProbTournamentAction.triggered.connect(self.onProbTournament)
+        if not self.connect4:
+            self.newSmartGameAction = QtGui.QAction('New Smart Game', self)
+            self.newSmartGameAction.setShortcut('Ctrl+H')
+            self.newSmartGameAction.triggered.connect(self.onNewSmartGame)
 
-        self.newSmartTournamentAction = QtGui.QAction('Heuristic Tournament', self)
-        self.newSmartTournamentAction.setShortcut('Ctrl+P')
-        self.newSmartTournamentAction.triggered.connect(self.onSmartTournament)
+            self.newProbTournamentAction = QtGui.QAction('Prob Tournament', self)
+            self.newProbTournamentAction.setShortcut('Ctrl+P')
+            self.newProbTournamentAction.triggered.connect(self.onProbTournament)
+
+            self.newSmartTournamentAction = QtGui.QAction('Heuristic Tournament', self)
+            self.newSmartTournamentAction.setShortcut('Ctrl+P')
+            self.newSmartTournamentAction.triggered.connect(self.onSmartTournament)
 
         self.closeAction = QtGui.QAction("Close", self)
         self.closeAction.triggered.connect(self.onClose)
 
         menu = self.menuBar().addMenu("Game")
         menu.addAction(self.newGameAction)
-        menu.addAction(self.newSmartGameAction)
         menu.addAction(self.newRandomTournamentAction)
-        menu.addAction(self.newSmartTournamentAction)
-        menu.addAction(self.newProbTournamentAction)
+        if not self.connect4:
+            menu.addAction(self.newSmartGameAction)
+            menu.addAction(self.newSmartTournamentAction)
+            menu.addAction(self.newProbTournamentAction)
         menu.addAction(self.closeAction)
         # end menu actions
 
-
-        self.setWindowTitle('Tic tac toe')
+        title = 'Tic tac toe' if not self.connect4 else 'Connect4'
+        self.setWindowTitle(title)
         self.setCentralWidget(QtGui.QWidget())
         self.centralWidget().setLayout(vbox)
 
         # configure background thread
         self.command_q = Queue.Queue()
-        self.ai_thread = AIThread(q=self.command_q)
+        self.ai_thread = AIThread(q=self.command_q, connect4=self.connect4)
         self.ai_thread.updateButton.connect(self.write_button)
         self.ai_thread.updateProgress.connect(self.update_progress)
         self.ai_thread.finishedTournament.connect(self.onTournamentFinish)

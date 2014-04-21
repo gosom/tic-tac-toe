@@ -1,5 +1,6 @@
 # -*- coding: utf-8 -*-
 import logging
+import random
 
 import numpy as np
 from copy import deepcopy
@@ -47,8 +48,13 @@ class SmartPlayer(BasePlayer):
         if np.absolute(gs.gameState).sum() == 0:
             return (0, 0)
         score, move = negamax(gs, self.player)
-        print 'PLAYES %s' % str(move)
         return move
+
+class RandomConnect4Player(BasePlayer):
+
+    def get_move(self, gs):
+        available_moves = gs.get_available_moves()
+        return random.choice(available_moves)
 
 
 
