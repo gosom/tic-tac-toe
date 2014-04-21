@@ -21,9 +21,11 @@ Sample application for the course GameAI Uni Bonn 2014.
 
 
 If the application does not run please make sure:
+
     a. you installed python
     b. installed the correct python version
     c. you installed the above dependencies
+
 
 If after installing all the above you still have a problem,
 please open an issue with some information about your computer.
