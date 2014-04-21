@@ -1,3 +1,4 @@
+import sys
 try:
     import PySide.QtCore as QtCore
     import PySide.QtGui as QtGui
@@ -11,14 +12,15 @@ except ImportError:
     sys.exit('pyside is required!')
 try:
     import matplotlib
-    matplotlib.use('Qt4Agg')
-    matplotlib.rcParams['backend.qt4']='PySide'
-
-    from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
-    from matplotlib.figure import Figure
-    from matplotlib.pylab import axes, pie
 except ImportError:
     sys.exit('matplotlib is required!')
+
+matplotlib.use('Qt4Agg')
+matplotlib.rcParams['backend.qt4']='PySide'
+
+from matplotlib.backends.backend_qt4agg import FigureCanvasQTAgg as FigureCanvas
+from matplotlib.figure import Figure
+from matplotlib.pylab import axes, pie
 
 
 class MatplotlibWidget(QtGui.QWidget):
