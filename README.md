@@ -26,3 +26,4 @@ the user [https://github.com/niklasf]
     Dimitris Nikolaou
     Helma Torkamaan
     Giorgos Komninos
+    Alexandr Sapunji
