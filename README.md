@@ -52,3 +52,4 @@ About the negamax algorithm here: http://www.hamedahmadi.com/gametree/#negamax
     Helma Torkamaan
     Giorgos Komninos
     Alexandr Sapunji
+    Stephen Gunashekar
