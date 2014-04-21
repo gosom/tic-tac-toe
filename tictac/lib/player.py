@@ -53,8 +53,7 @@ class SmartPlayer(BasePlayer):
 class RandomConnect4Player(BasePlayer):
 
     def get_move(self, gs):
-        available_moves = gs.get_available_moves()
-        return random.choice(available_moves)
+        return random.choice(gs.get_available_moves())
 
 
 

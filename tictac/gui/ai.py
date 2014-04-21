@@ -59,12 +59,13 @@ class AIThread(QtCore.QThread):
         thegame.start(draw_signal=self.updateButton)
 
     def run_tournament(self, play_type):
-        t = Tournament(play_type=play_type)
+        t = Tournament(play_type=play_type, connect4=self.connect4)
         t.start(qsignal=self.updateProgress)
         self.finishedTournament.emit(t.tournament_stats)
 
     def __reset_buttons(self):
-        [self.updateButton.emit(i, '') for i in xrange(9)]
+        no_buttons = 42 if self.connect4 else 9
+        [self.updateButton.emit(i, '') for i in xrange(no_buttons)]
 
 
 
