@@ -87,11 +87,18 @@ def test_winner():
     assert gs.is_win(1) == False
     assert gs.is_win(-1) == True
     assert gs.winner == -1
+    gs = Connect4GameState(gs=np.zeros((6, 7), dtype=int),)
+    for i in xrange(0, 5):
+        gs.do_move(i, 1)
+    print gs
+    assert gs.is_win(1) == True
+
+
 
 def test_diagonals():
     gs = Connect4GameState(gs=np.zeros((6, 7), dtype=int),)
     gs.do_move(0, 1)
     gs.do_move(5, 1)
     gs.do_move(6, 1)
-    assert len(gs.get_diagonals()) == 25
+    assert len(gs.get_diagonals()) == 12
 

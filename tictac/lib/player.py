@@ -29,6 +29,8 @@ class BasePlayer(object):
 class RandomPlayer(BasePlayer):
 
     def get_move(self, gs):
+        """
+        :gs : gameState object """
         return gs.get_random_move()
 
 

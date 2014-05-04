@@ -6,6 +6,7 @@ sample code
 from copy import copy, deepcopy
 import itertools
 import math
+import operator
 
 import numpy as np
 
@@ -104,6 +105,9 @@ class Connect4GameState(BaseGameState):
         return None
 
     def evaluation(self):
+        """Returns 0 if we have a draw.
+        If we have a winner returns the winner (1 | -1)
+        else if there are still available moves returns 100"""
         if self.winner in (-1, 1):
             return self.winner
         if self.move_still_possible():
@@ -116,7 +120,6 @@ class Connect4GameState(BaseGameState):
         if there is no game then the sum of the absolute values
         of all elements should be  ndarray.size
         """
-        #print self.gameState.sum()
         return np.absolute(self.gameState).sum() < self.gameState.size
 
     def get_available_moves(self):
@@ -144,11 +147,8 @@ class Connect4GameState(BaseGameState):
     def is_win(self, p):
         """Determine if the player has a 4 in a row in:
             - columns, rows, diagonals
-            http://docs.scipy.org/doc/numpy/reference/generated/numpy.diag.html
         """
         assert p != 0
-        # fist for rows:
-        #rows_array = np.array_split(self.gameState, 6, axis=0)
         rows =  [self.gameState[i,:].tolist() for i in xrange(0, 6)]
         columns = [self.gameState[:,i].tolist() for i in xrange(0, 7)]
         diags = self.get_diagonals()
@@ -157,19 +157,36 @@ class Connect4GameState(BaseGameState):
         return False
 
     def find_score4(self, l, p):
+        """Returns True if the l contains 4 in a row"""
+        comp_operator = operator.ge if p == 1 else operator.le
         for r in l:
             for k, v in itertools.groupby(r):
-                if sum(v) == p * 4:
+                if comp_operator(sum(v), p *4):
                     return True
         return False
 
     def get_diagonals(self):
-        """"""
+        """
+        Returns a list of all* the diagonals of the array.
+        * Actually we do not return the ones with len()<4 since
+        there we cannot have a score4 there.
+
+        Idea modified from here:
+        http://stackoverflow.com/questions/6313308/get-all-the-diagonals-in-a-matrix-list-of-lists-in-python
+
+        we want lower-left-to-upper-right and upper-left-to-lower right
+        diagonals.
+        "::-1" returns the rows in reverse. ":" returns the columns as is,
+        effectively vertically mirroring the original array so the wanted
+        diagonals are# lower-right-to-uppper-left.
+        ::-1 -> returns rows reversed.
+
+        """
         # upper diagonals k > 0
         diags = [self.gameState[::-1,:].diagonal(i)
                 for i in range(-6, 7)]
         diags.extend(self.gameState.diagonal(i) for i in range(6,-6,-1))
-        return list(d.tolist() for d in diags)
+        return filter(lambda e: len(e) > 3, [d.tolist() for d in diags])
 
 
 

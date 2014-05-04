@@ -53,3 +53,4 @@ About the negamax algorithm here: http://www.hamedahmadi.com/gametree/#negamax
     Giorgos Komninos
     Alexandr Sapunji
     Stephen Gunashekar
+    Shubham Agarwal
