@@ -3,9 +3,11 @@
 Prof. Dr. Christian Bauckhage (http://mmprec.iais.fraunhofer.de/bauckhage)
 sample code
 """
+import logging
 from copy import copy, deepcopy
 import itertools
 import math
+import sys
 import operator
 
 import numpy as np
@@ -99,7 +101,7 @@ class Connect4GameState(BaseGameState):
 
     @property
     def winner(self):
-        for p in filter(lambda p: p != 0,SYMBOLS.iterkeys()):
+        for p in filter(lambda p: p != 0, SYMBOLS.iterkeys()):
             if self.is_win(p):
                 return p
         return None
@@ -113,6 +115,23 @@ class Connect4GameState(BaseGameState):
         if self.move_still_possible():
             return 100
         return 0
+
+    def score_eval(self, current_player, t=False):
+        if self.is_win(current_player):
+            return sys.maxint
+        elif self.is_win(-current_player):
+            return -sys.maxint
+
+        current_free3 = self.find_num_free_nples(current_player, 3) * 4
+        current_free2 = self.find_num_free_nples(current_player, 2)
+
+        opp_free3 = self.find_num_free_nples(-current_player, 3) * 4
+        opp_free2 = self.find_num_free_nples(-current_player, 2)
+        if t:
+            print opp_free2, 'eee'
+        score = current_free3 + current_free2 - opp_free3 - opp_free2
+
+        return score
 
     def move_still_possible(self):
         """a move is still possible when there is at least one
@@ -144,7 +163,33 @@ class Connect4GameState(BaseGameState):
                 self.gameState[row, move] = player
                 break
 
-    def is_win(self, p):
+    def undo_move(self, move):
+        for row in xrange(0, 6):
+            if self.gameState[row, move] != 0:
+                self.gameState[row, move] = 0
+                break
+
+    def find_num_free_nples(self, p, n):
+        rows =  [self.gameState[i,:].tolist() for i in xrange(0, 6)]
+        columns = [self.gameState[:,i].tolist() for i in xrange(0, 7)]
+        diags = self.get_diagonals()
+        import re
+        num = 0
+        def to_int(e):
+            if e == -1:
+                return '2'
+            return str(e)
+        for r in rows + columns + diags:
+            row_str = ''.join(map(to_int, r))
+            search_for = to_int(p)
+            our_regex = search_for + '{' + str(n) + '}'
+            pattern = '(' + our_regex + '0+)|(0+' + our_regex + ')'
+            matches = re.findall(pattern, row_str)
+            if matches:
+                num += len(matches)
+        return num
+
+    def is_win(self, p,):
         """Determine if the player has a 4 in a row in:
             - columns, rows, diagonals
         """
@@ -161,7 +206,8 @@ class Connect4GameState(BaseGameState):
         comp_operator = operator.ge if p == 1 else operator.le
         for r in l:
             for k, v in itertools.groupby(r):
-                if comp_operator(sum(v), p *4):
+                ml = list(v)
+                if comp_operator(sum(ml), p * 4):
                     return True
         return False
 

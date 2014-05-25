@@ -52,13 +52,19 @@ class SmartPlayer(BasePlayer):
         score, move = negamax(gs, self.player)
         return move
 
+
 class RandomConnect4Player(BasePlayer):
 
     def get_move(self, gs):
         return random.choice(gs.get_available_moves())
 
 
+class Connect4SmartPlayer(BasePlayer):
 
-
-
-
+    def get_move(self, gs):
+        if np.absolute(gs.gameState).sum() == 0:
+            return 3
+        depth = 4
+        score, move = negamax(gs, self.player, 100, 100-depth, True)
+        print self.player, score, move
+        return move

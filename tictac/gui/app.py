@@ -67,6 +67,10 @@ class TicTacToeApp(QtGui.QMainWindow):
             self.newSmartTournamentAction = QtGui.QAction('Heuristic Tournament', self)
             self.newSmartTournamentAction.setShortcut('Ctrl+P')
             self.newSmartTournamentAction.triggered.connect(self.onSmartTournament)
+        elif self.connect4:
+            self.newSmarcC4Action = QtGui.QAction('New Smart Game', self)
+            self.newSmarcC4Action.setShortcut('Ctrl+H')
+            self.newSmarcC4Action.triggered.connect(self.onNewSmartC4Game)
 
         self.closeAction = QtGui.QAction("Close", self)
         self.closeAction.triggered.connect(self.onClose)
@@ -78,6 +82,9 @@ class TicTacToeApp(QtGui.QMainWindow):
             menu.addAction(self.newSmartGameAction)
             menu.addAction(self.newSmartTournamentAction)
             menu.addAction(self.newProbTournamentAction)
+        elif self.connect4:
+            menu.addAction(self.newSmarcC4Action)
+
         menu.addAction(self.closeAction)
         # end menu actions
 
@@ -125,6 +132,10 @@ class TicTacToeApp(QtGui.QMainWindow):
 
     def onNewSmartGame(self):
         self.command_q.put('smart')
+
+    def onNewSmartC4Game(self):
+        self.command_q.put('smart')
+        self.log.debug('Starting connect4 smart')
 
     def onRandomTournament(self,):
         self.progress.show()

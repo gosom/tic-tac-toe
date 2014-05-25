@@ -8,7 +8,8 @@ except ImportError:
     sys.exit('pyside is required!')
 
 from ..lib.game import TicTacGame
-from ..lib.player import RandomPlayer, ProbRandomPlayer, SmartPlayer, RandomConnect4Player
+from ..lib.player import RandomPlayer, ProbRandomPlayer, SmartPlayer, RandomConnect4Player,\
+                         Connect4SmartPlayer
 from ..lib.tournament import Tournament, TournamentStats
 from ..lib import get_good_moves
 
@@ -50,9 +51,10 @@ class AIThread(QtCore.QThread):
         elif play_type == 1:
             p1 = ProbRandomPlayer(1, get_good_moves())
         elif play_type == 2:
-            p1 = SmartPlayer(1)
+            p1 = SmartPlayer(1) if not self.connect4 else Connect4SmartPlayer(1)
         else:
             raise Exception('Invalid play_type')
+        #p2 = Connect4SmartPlayer(-1)#
         p2 = self.random_player_constructor(-1)
         thegame = TicTacGame(player1=p1, player2=p2, connect4=self.connect4)
         self.__reset_buttons()
