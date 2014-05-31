@@ -8,7 +8,7 @@ from . import save_good_moves, get_good_moves
 
 class Tournament(object):
 
-    def __init__(self, rounds=100, play_type=0, connect4=False, depth=4):
+    def __init__(self, rounds=100, play_type=0, connect4=False, depth=4, noprunning=False):
         self.log = logging.getLogger(self.__class__.__name__)
         self.rounds = rounds
         self.play_type = play_type
@@ -19,7 +19,9 @@ class Tournament(object):
         elif play_type == 1:
             p1 = ProbRandomPlayer(1, get_good_moves())
         elif play_type == 2:
-            p1 = SmartPlayer(1) if not self.connect4 else Connect4SmartPlayer(1, depth=depth)
+            use_pruning = True if not noprunning else False
+            p1 = SmartPlayer(1) if not self.connect4 else Connect4SmartPlayer(1, depth=depth,
+                use_pruning=use_pruning)
         else:
             raise Exception('Invalid play_type')
         p2 = player_constructor(-1)

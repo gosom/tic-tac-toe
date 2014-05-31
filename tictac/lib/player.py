@@ -66,6 +66,8 @@ class Connect4SmartPlayer(BasePlayer):
         BasePlayer.__init__(self, player)
         self.depth = depth
         self.use_pruning = use_pruning
+        if not self.use_pruning:
+            self.log.warning('Prunning is not used')
 
     def get_move(self, gs):
         if np.absolute(gs.gameState).sum() == 0:

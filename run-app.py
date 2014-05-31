@@ -21,13 +21,14 @@ if __name__ == '__main__':
                         action='store_true', default=False)
     parser.add_argument('-v', '--verbose', action='store_true',
                         default=False)
+    parser.add_argument('-n', '--nopruning', action='store_true', default=False)
     args = parser.parse_args()
     loglevel = logging.DEBUG if args.verbose else logging.INFO
     logging.basicConfig(level=loglevel)
 
     qt_app = QtGui.QApplication(sys.argv)
 
-    app = TicTacToeApp(connect4=args.connect4)
+    app = TicTacToeApp(connect4=args.connect4, nopruning=args.nopruning)
     app.show()
 
     sys.exit(qt_app.exec_())

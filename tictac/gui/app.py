@@ -18,12 +18,13 @@ from .ai import AIThread
 class TicTacToeApp(QtGui.QMainWindow):
     """"tic tac toe"""
 
-    def __init__(self, connect4=False):
+    def __init__(self, connect4=False, nopruning=False):
         QtGui.QMainWindow.__init__(self)
         self.log = logging.getLogger(self.__class__.__name__)
         self.log.info('Starting %s', self.__class__.__name__)
 
         vbox = QtGui.QVBoxLayout()
+        self.noprunning = nopruning
         # Progress dialog
         self.progress = QtGui.QProgressDialog("Starting Tournament",
                                               "Cancel", 0, 100, self)
@@ -163,7 +164,7 @@ class TicTacToeApp(QtGui.QMainWindow):
             depth, ok = dialog.getInt(self, 'Depth', 'Enter depth (1, 10):')
             if depth not in range(1, 40): continue
             if ok:
-                self.command_q.put(('c4smart_tournament', depth))
+                self.command_q.put(('c4smart_tournament', depth, self.noprunning))
                 break
             else:
                 self.log.error('Cannot read input')
