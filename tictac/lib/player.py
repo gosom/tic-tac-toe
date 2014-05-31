@@ -1,6 +1,7 @@
 # -*- coding: utf-8 -*-
 import logging
 import random
+import sys
 
 import numpy as np
 from copy import deepcopy
@@ -61,10 +62,19 @@ class RandomConnect4Player(BasePlayer):
 
 class Connect4SmartPlayer(BasePlayer):
 
+    def __init__(self, player, depth=4, use_pruning=True):
+        BasePlayer.__init__(self, player)
+        self.depth = depth
+        self.use_pruning = use_pruning
+
     def get_move(self, gs):
         if np.absolute(gs.gameState).sum() == 0:
             return 3
-        depth = 4
-        score, move = negamax(gs, self.player, 100, 100-depth, True)
-        print self.player, score, move
+        if self.use_pruning:
+            inf = float('inf')
+            args = (gs, self.player, 100, 100-self.depth, True, -inf, inf, False)
+        else:
+            args = (gs, self.player, 100, 100-self.depth, True, None, None, False)
+        score, move = negamax(*args)
         return move
+

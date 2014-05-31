@@ -2,6 +2,7 @@
 import logging
 from copy import deepcopy
 import random
+import sys
 
 log = logging.getLogger('ai')
 
@@ -20,7 +21,7 @@ def score(gs, pId, level, c4=False):
     return level if val == pId else -level
 
 
-def negamax(gs, pId, level=9, min_level=0, c4=False):
+def negamax(gs, pId, level=9, min_level=0, c4=False, alpha=None, beta=None, debug=False):
     """Implementation of negamax algorithm.
     see here: http://www.hamedahmadi.com/gametree/#negamax
     Parameters:
@@ -29,22 +30,33 @@ def negamax(gs, pId, level=9, min_level=0, c4=False):
     :level : The current level (9 max)
     Returns a tuple (best_score, best_move)
     """
+    use_alphabeta = alpha is not None and beta is not None
     if level == min_level or gs.game_over:
         return score(gs, pId, level, c4), None
     max_score = -float('inf')
     best_move = None
     currentGS = deepcopy(gs)
     for move in gs.get_available_moves():
-        #currentGS = deepcopy(gs)
-        #tmp = deepcopy(currentGS)
         currentGS.do_move(move, pId)
-        x, _ = negamax(currentGS, -pId, level-1, min_level, c4)
+        if use_alphabeta:
+            x, _ = negamax(currentGS, -pId, level-1, min_level, c4, -beta, -alpha, debug)
+        else:
+            x, _ = negamax(currentGS, -pId, level-1, min_level, c4, None, None, debug)
+
         currentGS.undo_move(move)
-        #assert currentGS == tmp
         x = -x
-        if x > max_score:
+        
+        if use_alphabeta:
+            max_score = max(max_score, x)
+        if use_alphabeta and alpha < x:
+            alpha = x
+            best_move = move
+            if alpha >= beta:
+                break
+        elif not use_alphabeta and x > max_score:
             max_score = x
             best_move = move
+
     return max_score, best_move
 
 

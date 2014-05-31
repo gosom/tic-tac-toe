@@ -93,8 +93,6 @@ def test_winner():
     print gs
     assert gs.is_win(1) == True
 
-
-
 def test_diagonals():
     gs = Connect4GameState(gs=np.zeros((6, 7), dtype=int),)
     gs.do_move(0, 1)

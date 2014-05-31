@@ -54,8 +54,10 @@ class AIThread(QtCore.QThread):
             p1 = SmartPlayer(1) if not self.connect4 else Connect4SmartPlayer(1)
         else:
             raise Exception('Invalid play_type')
-        #p2 = Connect4SmartPlayer(-1)#
-        p2 = self.random_player_constructor(-1)
+        if 0 and self.connect4:
+            p2 = Connect4SmartPlayer(-1, 4)#
+        else:
+            p2 = self.random_player_constructor(-1)
         thegame = TicTacGame(player1=p1, player2=p2, connect4=self.connect4)
         self.__reset_buttons()
         thegame.start(draw_signal=self.updateButton)

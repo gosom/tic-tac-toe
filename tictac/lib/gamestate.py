@@ -8,6 +8,7 @@ from copy import copy, deepcopy
 import itertools
 import math
 import sys
+import re
 import operator
 
 import numpy as np
@@ -127,11 +128,36 @@ class Connect4GameState(BaseGameState):
 
         opp_free3 = self.find_num_free_nples(-current_player, 3) * 4
         opp_free2 = self.find_num_free_nples(-current_player, 2)
-        if t:
-            print opp_free2, 'eee'
         score = current_free3 + current_free2 - opp_free3 - opp_free2
-
+        #print current_free3, current_free2, opp_free3, opp_free2, score
         return score
+
+    def find_num_free_nples(self, p, n):
+        rows =  [self.gameState[i,:].tolist() for i in xrange(0, 6)]
+        columns = [self.gameState[:,i].tolist() for i in xrange(0, 7)]
+        diags = self.get_diagonals()
+        regex = self.find_tuples(p, n)
+        num = 0
+        for r in rows + columns + diags:
+            row_str = ''.join(map(str, r))
+            matches = regex.findall(row_str)
+            if matches:
+                num += len(matches)
+        return num
+
+    def find_tuples(self, p, n):
+        if n == 2:
+            if p == 1:
+                pattern = r'(0*1{2}0{2,})|(0{2,}1{2}0*)|(0*10{1}10+)|(1001)'
+            else:
+                pattern = r'(0*(-1){2}0{2,})|(0{2,}(-1){2}0*)|(0*-10{1}-10+)|(-100-1)'
+        else:
+            if p == 1:
+                pattern = r'(0*1{3}0{1,})|(0{1,}1{3}0*)|(0*1{2}01)|(10110*)'
+            else:
+                pattern = r'(0*(-1){3}0{1,})|(0{1,}(-1){3}0*)|(0*(-1){2}0-1)|(-10-1-10*)'
+        #print pattern
+        return re.compile(pattern)
 
     def move_still_possible(self):
         """a move is still possible when there is at least one
@@ -144,6 +170,8 @@ class Connect4GameState(BaseGameState):
     def get_available_moves(self):
         """Here we want all the columns with sum (of the abs values) < 0
         """
+        if self.evaluation() != 100:
+            return []
         column_sum = np.absolute(self.gameState).sum(axis=0).T
         return tuple(i for i, v in enumerate(tuple(column_sum)) if v < 6 )
 
@@ -168,26 +196,6 @@ class Connect4GameState(BaseGameState):
             if self.gameState[row, move] != 0:
                 self.gameState[row, move] = 0
                 break
-
-    def find_num_free_nples(self, p, n):
-        rows =  [self.gameState[i,:].tolist() for i in xrange(0, 6)]
-        columns = [self.gameState[:,i].tolist() for i in xrange(0, 7)]
-        diags = self.get_diagonals()
-        import re
-        num = 0
-        def to_int(e):
-            if e == -1:
-                return '2'
-            return str(e)
-        for r in rows + columns + diags:
-            row_str = ''.join(map(to_int, r))
-            search_for = to_int(p)
-            our_regex = search_for + '{' + str(n) + '}'
-            pattern = '(' + our_regex + '0+)|(0+' + our_regex + ')'
-            matches = re.findall(pattern, row_str)
-            if matches:
-                num += len(matches)
-        return num
 
     def is_win(self, p,):
         """Determine if the player has a 4 in a row in:
@@ -233,7 +241,6 @@ class Connect4GameState(BaseGameState):
                 for i in range(-6, 7)]
         diags.extend(self.gameState.diagonal(i) for i in range(6,-6,-1))
         return filter(lambda e: len(e) > 3, [d.tolist() for d in diags])
-
 
 
 class TicTacGameState(BaseGameState):
