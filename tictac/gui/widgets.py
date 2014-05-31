@@ -40,10 +40,23 @@ class MatplotlibWidget(QtGui.QWidget):
         self.layoutVertical.addWidget(self.canvas)
 
         savePlotBtn = QtGui.QPushButton("Save")
+
+        self.time_lbl = QtGui.QLabel('', )
+        self.avg_per_round = QtGui.QLabel('', )
+        self.layoutVertical.addWidget(self.time_lbl)
+        self.layoutVertical.addWidget(self.avg_per_round)
         self.layoutVertical.addWidget(savePlotBtn)
         savePlotBtn.clicked.connect(self.onSave)
 
-    def add_data(self, values, labels):
+    def add_data(self, values, labels, duration=None, avg=None):
+        self.time_lbl.clear()
+        self.avg_per_round.clear()
+        if duration:
+            self.time_lbl.setText('Duration: %g seconds' % duration)
+            self.time_lbl.repaint()
+        if avg:
+            self.avg_per_round.setText('Avg per round: %g' % avg)
+            self.avg_per_round.repaint()
         self.axis.clear()
         self.axis.pie(values, labels=labels, explode=None,
                         autopct='%1.1f%%', shadow=True, startangle=90)

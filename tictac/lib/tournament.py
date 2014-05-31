@@ -1,12 +1,14 @@
 import logging
+import time
 
 from .game import TicTacGame
-from .player import RandomPlayer, ProbRandomPlayer, SmartPlayer, RandomConnect4Player
+from .player import RandomPlayer, ProbRandomPlayer, SmartPlayer,\
+                    RandomConnect4Player, Connect4SmartPlayer
 from . import save_good_moves, get_good_moves
 
 class Tournament(object):
 
-    def __init__(self, rounds=1000, play_type=0, connect4=False):
+    def __init__(self, rounds=100, play_type=0, connect4=False, depth=4):
         self.log = logging.getLogger(self.__class__.__name__)
         self.rounds = rounds
         self.play_type = play_type
@@ -17,18 +19,20 @@ class Tournament(object):
         elif play_type == 1:
             p1 = ProbRandomPlayer(1, get_good_moves())
         elif play_type == 2:
-            p1 = SmartPlayer(1)
+            p1 = SmartPlayer(1) if not self.connect4 else Connect4SmartPlayer(1, depth=depth)
         else:
             raise Exception('Invalid play_type')
         p2 = player_constructor(-1)
         self.players = (p1, p2)
         self.tournament_stats = TournamentStats(self.rounds, connect4)
 
+
     def start(self, qsignal=None):
         self.log.debug('Running tournament of type %d', self.play_type)
-        update_every = self.rounds/100
+        update_every = max(1, self.rounds/100)
         progress = 0
         round_num = 0
+        start_time = time.time()
         while round_num < self.rounds:
             game = TicTacGame(*self.players, connect4=self.connect4)
             game.start()
@@ -38,7 +42,10 @@ class Tournament(object):
                 progress += 1
                 if qsignal:
                     qsignal.emit(progress)
-        self.log.info('Tournament %s finished', repr(self.tournament_stats))
+        self.tournament_stats.duration = time.time() - start_time
+        self.tournament_stats.avg_duration = self.tournament_stats.duration/self.rounds
+        self.log.info('Tournament %s finished',
+                        repr(self.tournament_stats))
         self.log.debug('Toournament good moves:\n%s',
                        self.tournament_stats.good_moves)
         if self.play_type == 0 and not self.connect4:

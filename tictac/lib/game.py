@@ -40,7 +40,7 @@ class TicTacGame(object):
 
         already_updated = set()
         while self.state.evaluation() == 100:
-            self.log.info('%s moves', repr(player))
+            self.log.debug('%s moves', repr(player))
             move = player.get_move(self.state)
             self.state.do_move(move, player.player)
 

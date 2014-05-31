@@ -30,7 +30,9 @@ class AIThread(QtCore.QThread):
     def run(self):
         while True:
             command = self.q.get(block=True)
-            if command == 'new':
+            if isinstance(command, tuple) and command[0] == 'c4smart_tournament':
+                self.run_tournament(play_type=2, depth=command[1])
+            elif command == 'new':
                 self.play_game(play_type=0)
             elif command == 'smart':
                 self.play_game(play_type=2)
@@ -62,8 +64,8 @@ class AIThread(QtCore.QThread):
         self.__reset_buttons()
         thegame.start(draw_signal=self.updateButton)
 
-    def run_tournament(self, play_type):
-        t = Tournament(play_type=play_type, connect4=self.connect4)
+    def run_tournament(self, play_type, depth=4):
+        t = Tournament(play_type=play_type, connect4=self.connect4, depth=depth)
         t.start(qsignal=self.updateProgress)
         self.finishedTournament.emit(t.tournament_stats)
 

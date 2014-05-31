@@ -34,7 +34,7 @@ class TicTacToeApp(QtGui.QMainWindow):
         grid = QtGui.QGridLayout()
         self.buttons = QtGui.QButtonGroup()
         self.buttons.setExclusive(False)
-        self.connect4 =  connect4
+        self.connect4 = connect4
 
         rows, cols = (6, 7) if connect4 else (3, 3)
         btn_val = 6 if connect4 else 3
@@ -69,6 +69,8 @@ class TicTacToeApp(QtGui.QMainWindow):
             self.newSmartTournamentAction.triggered.connect(self.onSmartTournament)
         elif self.connect4:
             self.newSmarcC4Action = QtGui.QAction('New Smart Game', self)
+            self.newSmartTournamentC4Action = QtGui.QAction('New Heuristic Tournament', self)
+            self.newSmartTournamentC4Action.triggered.connect(self.onConnect4SmartTournament)
             self.newSmarcC4Action.setShortcut('Ctrl+H')
             self.newSmarcC4Action.triggered.connect(self.onNewSmartC4Game)
 
@@ -84,6 +86,7 @@ class TicTacToeApp(QtGui.QMainWindow):
             menu.addAction(self.newProbTournamentAction)
         elif self.connect4:
             menu.addAction(self.newSmarcC4Action)
+            menu.addAction(self.newSmartTournamentC4Action)
 
         menu.addAction(self.closeAction)
         # end menu actions
@@ -124,7 +127,8 @@ class TicTacToeApp(QtGui.QMainWindow):
     def onTournamentFinish(self, tournament):
         values, labels = tournament.plot_data
         matplotlibWidget = MatplotlibWidget(self.stats_window)
-        matplotlibWidget.add_data(values, labels)
+        matplotlibWidget.add_data(values, labels, tournament.duration,
+                                  tournament.avg_duration)
         self.stats_window.show()
 
     def onNewGame(self):
@@ -148,3 +152,19 @@ class TicTacToeApp(QtGui.QMainWindow):
     def onSmartTournament(self):
         self.progress.show()
         self.command_q.put('smart_tournament')
+
+    def onConnect4SmartTournament(self):
+        depth = None
+        dialog = QtGui.QInputDialog()
+        dialog.setInputMode(QtGui.QInputDialog.IntInput)
+        dialog.setIntRange(1, 40)
+        depth = None
+        while not depth:
+            depth, ok = dialog.getInt(self, 'Depth', 'Enter depth (1, 10):')
+            if depth not in range(1, 40): continue
+            if ok:
+                self.command_q.put(('c4smart_tournament', depth))
+                break
+            else:
+                self.log.error('Cannot read input')
+                break
