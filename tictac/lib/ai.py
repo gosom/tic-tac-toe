@@ -8,9 +8,14 @@ log = logging.getLogger('ai')
 
 
 def score(gs, pId, level, c4=False):
-    """if the gs is a win for the player pId it returns level
+    """
+    For tictactoe:
+        if the gs is a win for the player pId it returns level
     if a win for the opponent -level
-    otherwise (draw) zero"""
+    otherwise (draw) zero
+    For connect4 (c4 == True):
+        Uses the scor_eval function see docstring there
+    """
     if not c4:
         val = gs.evaluation()
     else:
@@ -24,10 +29,15 @@ def score(gs, pId, level, c4=False):
 def negamax(gs, pId, level=9, min_level=0, c4=False, alpha=None, beta=None, debug=False):
     """Implementation of negamax algorithm.
     see here: http://www.hamedahmadi.com/gametree/#negamax
+    If parameters alpha and beta are set (-inf, inf) then alpha-beta pruning is used
     Parameters:
     :gs : the gamestate
     :pId : the player (1, -1)
     :level : The current level (9 max)
+    :min_level: depth of the search
+    :c4 : use for connect4
+    :alpha & :beta : used for alpha beta pruning see wikipedia id u do not know
+    :debug: if u want to pring something
     Returns a tuple (best_score, best_move)
     """
     use_alphabeta = alpha is not None and beta is not None

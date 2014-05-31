@@ -118,6 +118,29 @@ class Connect4GameState(BaseGameState):
         return 0
 
     def score_eval(self, current_player, t=False):
+        """Returns a positive score if the current player wins or is
+        in an advantegous position.
+        If the other player wins returns negative.
+        In particular:
+            - when we have a win returns sys.maxint when current_player wins
+              else if the other playrs wins -sys.maxing
+            - When none of the players wins it computes a score:
+                Score computation:
+                    We count the number of *possible* 3 in a row/diagonal/column for
+                    each player and multiply that by 4.
+                    We count the number of *possible* 2 in a row/diagonal/column for 
+                    each player.
+                    We substract the above 2 numbers (score_current_player - score_opponent)
+
+                    *By possible we mean positions with potential, which means that a score4 can
+                    happen.
+                    Here is an example:
+                    Let's say we have a row containing: 1110000
+                    This row has a triple (111).
+                    This happens for all rows/diagonals/columns.
+                    The function that computes the number of 2ples or 3ples is find_num_free_nples .
+                    See the documentation there"""
+
         if self.is_win(current_player):
             return sys.maxint
         elif self.is_win(-current_player):
@@ -133,6 +156,15 @@ class Connect4GameState(BaseGameState):
         return score
 
     def find_num_free_nples(self, p, n):
+        """
+        Returns
+        the number of nples in the gameboard.
+
+        The calculation is done by converting each row/column/diagonal 
+        in a string and running regular expressions
+        See the method find_tuples (wrong name, I know) to see the
+        patterns we are interested in.
+        """
         rows =  [self.gameState[i,:].tolist() for i in xrange(0, 6)]
         columns = [self.gameState[:,i].tolist() for i in xrange(0, 7)]
         diags = self.get_diagonals()
@@ -146,6 +178,10 @@ class Connect4GameState(BaseGameState):
         return num
 
     def find_tuples(self, p, n):
+        """Returns a regular expression object with the 
+        correct pattern. We have patterns to find moves with
+        2 marks or 3 marks which have potential.
+        By potential, we mean that they eventually can lead to a score4. """
         if n == 2:
             if p == 1:
                 pattern = r'(0*1{2}0{2,})|(0{2,}1{2}0*)|(0*10{1}10+)|(1001)'
